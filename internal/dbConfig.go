@@ -24,12 +24,14 @@ func ReadDBConfig() (*DBConfig, error) {
 	file, err := os.ReadFile("config/db_config.json")
 	if err != nil {
 		logger.Error(err)
+		return nil, err
 	}
 	var config Config
 	logger.Info("反序列化JSON数据")
 	err = json.Unmarshal(file, &config)
 	if err != nil {
 		logger.Error(err)
+		return nil, err
 	}
 	return &config.Database, nil
 }

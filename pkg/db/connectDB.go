@@ -13,6 +13,7 @@ func ConnectDB() (*gorm.DB, error) {
 	dbConfig, err := internal.ReadDBConfig()
 	if err != nil {
 		logger.Error(err)
+		return nil, err
 	}
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8",
 		dbConfig.User,

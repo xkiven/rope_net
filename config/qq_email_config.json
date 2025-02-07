@@ -2,5 +2,5 @@
   "qq_email": "2674302433@qq.com",
   "qq_email_auth_code": "sshkmftymkzpecee",
   "smtp_server": "smtp.qq.com",
-  "smtp_port": "587"
+  "smtp_port": "465"
 }

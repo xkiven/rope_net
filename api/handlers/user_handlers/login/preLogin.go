@@ -54,6 +54,7 @@ func PreLogin(c *gin.Context) {
 	}
 	//生成验证码
 	verificationCode := verification_code.GenerateVerificationCode(4)
+	logger.Info("储存验证码到缓存")
 	// 初始化一个默认过期时间为 5 分钟，清理间隔为 10 分钟的缓存
 	var verificationCodeCache = cache.New(5*time.Minute, 10*time.Minute)
 	// 存储验证码到缓存

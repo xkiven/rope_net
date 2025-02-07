@@ -12,7 +12,8 @@ func InitRoutes(r *gin.Engine) {
 		user := r.Group("/user")
 		{
 			user.POST("/register", user_handlers.Register)
-			user.POST("/PreLogin", login.PreLogin)
+			user.POST("/preLogin", login.PreLogin)
+			user.POST("/finalLogin", login.FinalLogin)
 		}
 	}
 

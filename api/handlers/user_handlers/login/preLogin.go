@@ -5,6 +5,7 @@ import (
 	db2 "Rope_Net/pkg/db"
 	"Rope_Net/pkg/identify/verification_code"
 	"Rope_Net/pkg/logger"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/patrickmn/go-cache"
 	"net/http"
@@ -61,12 +62,26 @@ func PreLogin(c *gin.Context) {
 
 	// 存储验证码到缓存
 	verificationCodeCache.Set(user.Username, verificationCode, cache.DefaultExpiration)
+
+	//使用gin会话管理储存用户名
+	logger.Info("创建会话")
+	session := sessions.Default(c)
+	session.Set("username", user.Username)
+	err = session.Save()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": 10005,
+			"info":   "创建会话失败",
+		})
+		logger.Error(err)
+		return
+	}
 	//发送验证码
 	err = verification_code.SendVerificationCode(user.Email, verificationCode)
 	if err != nil {
 		logger.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": 10005,
+			"status": 10006,
 			"info":   "发送验证码失败",
 		})
 		return

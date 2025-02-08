@@ -20,9 +20,10 @@ func InitRoutes(r *gin.Engine) {
 			user.POST("/finalLogin", login.FinalLogin)
 		}
 		post := r.Group("/post")
-		post.Use(middleware.IdentifyTokenMiddleware)
+		//post.Use(middleware.IdentifyTokenMiddleware)
 		{
-			post.POST("/publish", post_handlers.PublishPost)
+			post.POST("/publish", middleware.IdentifyTokenMiddleware, post_handlers.PublishPost)
+			post.GET("/getPost", post_handlers.GetPost)
 		}
 	}
 

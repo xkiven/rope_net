@@ -19,6 +19,7 @@ func Register(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
+	//连接数据库
 	db, err := db2.ConnectDB()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -29,6 +30,7 @@ func Register(c *gin.Context) {
 		return
 	}
 	defer db2.CloseDB(db)
+	//检查用户名是否存在
 	logger.Info("检查用户名是否已存在")
 	var existingUser models.User
 	result := db.Where("username = ?", user.Username).First(&existingUser)
@@ -47,7 +49,7 @@ func Register(c *gin.Context) {
 		logger.Error(result.Error)
 		return
 	}
-
+	//插入数据
 	logger.Info("插入数据库")
 	result = db.Create(&user)
 	if result.Error != nil {
@@ -61,6 +63,6 @@ func Register(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": 10000,
-		"info":   "success",
+		"info":   "注册成功",
 	})
 }

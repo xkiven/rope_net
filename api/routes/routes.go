@@ -24,6 +24,7 @@ func InitRoutes(r *gin.Engine) {
 		{
 			post.POST("/publish", middleware.IdentifyTokenMiddleware, post_handlers.PublishPost)
 			post.GET("/getPost", post_handlers.GetPost)
+			post.DELETE("/deletePost", middleware.IdentifyTokenMiddleware, post_handlers.DeletePost)
 		}
 	}
 

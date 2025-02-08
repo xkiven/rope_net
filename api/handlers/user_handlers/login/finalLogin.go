@@ -93,6 +93,9 @@ func FinalLogin(c *gin.Context) {
 		logger.Error(result.Error)
 		return
 	}
+	//将token传给客户端
+	logger.Info("将token传给客户端")
+	c.Writer.Header().Set("Authorization", "Bearer "+token)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": 10000,

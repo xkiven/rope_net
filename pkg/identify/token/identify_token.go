@@ -7,21 +7,21 @@ import (
 	"time"
 )
 
-func IdentifyToken(token string) bool {
+func IdentifyToken(token string) (*models.User, bool) {
 	logger.Info("验证token")
 	//连接数据库
 	db, err := db2.ConnectDB()
 	if err != nil {
 		logger.Error(err)
-		return false
+		return nil, false
 	}
 	defer db2.CloseDB(db)
 	//验证
-	var existingUser models.User
-	result := db.Where("token = ? AND token_expires_at >?", token, time.Now()).First(&existingUser)
+	var user models.User
+	result := db.Where("token = ? AND token_expires_at >?", token, time.Now()).First(&user)
 	if result.Error != nil || result.RowsAffected == 0 {
-		return false
+		return nil, false
 	}
 
-	return true
+	return &user, true
 }

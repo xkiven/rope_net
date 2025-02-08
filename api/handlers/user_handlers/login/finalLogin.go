@@ -2,12 +2,11 @@ package login
 
 import (
 	db2 "Rope_Net/pkg/db"
+	token2 "Rope_Net/pkg/identify/token"
 	"Rope_Net/pkg/logger"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"math/rand"
 	"net/http"
-	"time"
 )
 
 func FinalLogin(c *gin.Context) {
@@ -61,15 +60,7 @@ func FinalLogin(c *gin.Context) {
 	verificationCodeCache.Delete(username.(string))
 
 	//生成token
-	logger.Info("生成随机token")
-	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	source := rand.NewSource(time.Now().UnixNano())
-	r := rand.New(source)
-	tokenBytes := make([]byte, 16)
-	for i := range tokenBytes {
-		tokenBytes[i] = charset[r.Intn(len(charset))]
-	}
-	token := string(tokenBytes)
+	token := token2.GenerateToken()
 
 	//连接数据库
 	db, err := db2.ConnectDB()

@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 func FinalLogin(c *gin.Context) {
@@ -61,7 +62,7 @@ func FinalLogin(c *gin.Context) {
 
 	//生成token
 	token := token2.GenerateToken()
-
+	expiration := time.Now().Add(24 * time.Hour)
 	//连接数据库
 	db, err := db2.ConnectDB()
 	if err != nil {
@@ -75,7 +76,10 @@ func FinalLogin(c *gin.Context) {
 	defer db2.CloseDB(db)
 	//插入token
 	logger.Info("更新用户token")
-	result := db.Table("users").Where("username = ?", username.(string)).Update("token", token)
+	result := db.Table("users").Where("username = ?", username.(string)).Updates(map[string]interface{}{
+		"token":            token,
+		"token_expires_at": expiration,
+	})
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": 10003,

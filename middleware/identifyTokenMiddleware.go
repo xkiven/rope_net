@@ -20,12 +20,14 @@ func IdentifyTokenMiddleware(c *gin.Context) {
 	}
 	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
 	// 调用验证函数
-	if !token.IdentifyToken(tokenString) {
+	user, isValid := token.IdentifyToken(tokenString)
+	if !isValid {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"code": 10011,
 			"info": "无效授权信息",
 		})
 		c.Abort()
 	}
+	c.Set("user", user)
 	c.Next()
 }

@@ -52,7 +52,7 @@ func PublishPost(c *gin.Context) {
 	result := db.Create(&post)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"status": 10003,
+			"status": 10005,
 			"info":   "发布帖子失败",
 		})
 		logger.Error(result.Error)

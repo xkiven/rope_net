@@ -15,7 +15,7 @@ func ConnectDB() (*gorm.DB, error) {
 		logger.Error(err)
 		return nil, err
 	}
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true",
 		dbConfig.User,
 		dbConfig.Password,
 		dbConfig.Host,

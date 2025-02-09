@@ -30,7 +30,7 @@ func InitRoutes(r *gin.Engine) {
 		}
 		comment := r.Group("/comment")
 		{
-			comment.POST("/publish", middleware.IdentifyTokenMiddleware, comment_handlers.CreateAndPublishComment)
+			comment.GET("/ws", middleware.IdentifyTokenMiddleware, comment_handlers.WebSocketHandler)
 		}
 	}
 

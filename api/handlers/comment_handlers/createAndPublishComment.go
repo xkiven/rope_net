@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func CreateComment(c *gin.Context) {
+func CreateAndPublishComment(c *gin.Context) {
 	// 从上下文中获取用户信息
 	logger.Info("从上下文获取用户信息")
 	user, exists := c.Get("user")
@@ -67,10 +67,20 @@ func CreateComment(c *gin.Context) {
 		logger.Error(result.Error)
 		return
 	}
+	//发布评论
+	err = PublishComment(postComment)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status": 10006,
+			"info":   "发布评论失败",
+		})
+		logger.Error(err)
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": 10000,
-		"info":   "创建评论成功",
+		"info":   "创建并发布评论成功",
 	})
 
 }

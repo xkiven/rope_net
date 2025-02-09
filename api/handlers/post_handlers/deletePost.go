@@ -21,17 +21,9 @@ func DeletePost(c *gin.Context) {
 	}
 	currentUser := user.(*models.User)
 
-	var ThePost models.Post
 	//传入要删的post的id
 	logger.Info("绑定参数")
-	if err := c.ShouldBindJSON(&ThePost); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": 10001,
-			"info":   "绑定参数错误",
-		})
-		logger.Error(err)
-		return
-	}
+	postID := c.Param("postID")
 
 	//连接数据库
 	db, err := db2.ConnectDB()
@@ -48,7 +40,7 @@ func DeletePost(c *gin.Context) {
 	//验证身份是否为post的创建者
 	logger.Info("检查此post是否存在")
 	var post models.Post
-	result := db.Where("id = ?", ThePost.ID).First(&post)
+	result := db.Where("id = ?", postID).First(&post)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": 10003,

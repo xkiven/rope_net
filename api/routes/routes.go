@@ -31,6 +31,7 @@ func InitRoutes(r *gin.Engine) {
 		comment := r.Group("/comment")
 		{
 			comment.GET("/ws", middleware.IdentifyTokenMiddleware, comment_handlers.WebSocketHandler)
+			comment.DELETE("/deleteComment/:commentID", middleware.IdentifyTokenMiddleware, comment_handlers.DeleteComment)
 		}
 	}
 

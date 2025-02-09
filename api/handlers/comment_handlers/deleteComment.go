@@ -1,6 +1,7 @@
-package deletePostComment
+package comment_handlers
 
 import (
+	"Rope_Net/api/handlers/comment_handlers/websocket"
 	"Rope_Net/models"
 	db2 "Rope_Net/pkg/db"
 	"Rope_Net/pkg/logger"
@@ -76,7 +77,7 @@ func DeleteComment(c *gin.Context) {
 		return
 	}
 
-	BroadcastCommentDeletion(postComment.PostID, commentID)
+	websocket.BroadcastCommentDeletion(postComment.PostID, commentID)
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": 10000,

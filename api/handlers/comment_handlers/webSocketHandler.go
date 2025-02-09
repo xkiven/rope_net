@@ -1,7 +1,8 @@
 package comment_handlers
 
 import (
-	"Rope_Net/api/handlers/comment_handlers/addPostComment"
+	"Rope_Net/api/handlers/comment_handlers/db"
+	websocket2 "Rope_Net/api/handlers/comment_handlers/websocket"
 	"Rope_Net/models"
 	"Rope_Net/pkg/logger"
 	"fmt"
@@ -21,8 +22,8 @@ var upGrader = websocket.Upgrader{
 }
 
 // 存储每个帖子 ID 对应的 WebSocket 连接
-var postClients = make(map[uint]map[*websocket.Conn]bool)
-var postClientsMutex sync.RWMutex
+var PostClients = make(map[uint]map[*websocket.Conn]bool)
+var PostClientsMutex sync.RWMutex
 
 func WebSocketHandler(c *gin.Context) {
 	postIDStr := c.Query("postID")
@@ -52,18 +53,18 @@ func WebSocketHandler(c *gin.Context) {
 		logger.Error("WebSocket 升级失败:", err)
 		return
 	}
-	defer addPostComment.CloseConnection(ws, postID)
+	defer websocket2.CloseConnection(ws, postID)
 
 	// 注册客户端到对应帖子的连接列表
-	addPostComment.registerClient(ws, postID)
+	websocket2.RegisterClient(ws, postID)
 
 	// 发送该帖子的历史评论给客户端
-	if err := addPostComment.SendHistoricalComments(ws, postID); err != nil {
+	if err := db.SendHistoricalComments(ws, postID); err != nil {
 		logger.Error("发送历史评论失败，帖子 ID: %d，错误信息: %v", postID, err)
 		return
 	}
 
 	// 监听客户端消息
-	addPostComment.HandleClientMessages(ws, postID, userID)
+	websocket2.HandleClientMessages(ws, postID, userID)
 
 }

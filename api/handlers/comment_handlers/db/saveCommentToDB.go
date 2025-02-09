@@ -1,4 +1,4 @@
-package addPostComment
+package db
 
 import (
 	"Rope_Net/models"

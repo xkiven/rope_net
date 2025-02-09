@@ -1,10 +1,10 @@
-package deletePostComment
+package websocket
 
 import "Rope_Net/api/handlers/comment_handlers"
 
 func BroadcastCommentDeletion(postID uint, commentID uint) {
-	comment_handlers.postClientsMutex.RLock()
-	if clients, ok := comment_handlers.postClients[postID]; ok {
+	comment_handlers.PostClientsMutex.RLock()
+	if clients, ok := comment_handlers.PostClients[postID]; ok {
 		for client := range clients {
 			message := map[string]interface{}{
 				"action":    "delete",
@@ -13,11 +13,11 @@ func BroadcastCommentDeletion(postID uint, commentID uint) {
 			err := client.WriteJSON(message)
 			if err != nil {
 				// 移除出错的客户端
-				comment_handlers.postClientsMutex.Lock()
-				delete(comment_handlers.postClients[postID], client)
-				comment_handlers.postClientsMutex.Unlock()
+				comment_handlers.PostClientsMutex.Lock()
+				delete(comment_handlers.PostClients[postID], client)
+				comment_handlers.PostClientsMutex.Unlock()
 			}
 		}
 	}
-	comment_handlers.postClientsMutex.RUnlock()
+	comment_handlers.PostClientsMutex.RUnlock()
 }

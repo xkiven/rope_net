@@ -31,6 +31,7 @@ func InitRoutes(r *gin.Engine) {
 		comment := r.Group("/comment")
 		{
 			comment.POST("/create", middleware.IdentifyTokenMiddleware, comment_handlers.CreateComment)
+
 		}
 	}
 

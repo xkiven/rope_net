@@ -1,6 +1,7 @@
 package comment_handlers
 
 import (
+	"Rope_Net/api/handlers/comment_handlers/addPostComment"
 	"Rope_Net/models"
 	"Rope_Net/pkg/logger"
 	"fmt"
@@ -51,18 +52,18 @@ func WebSocketHandler(c *gin.Context) {
 		logger.Error("WebSocket 升级失败:", err)
 		return
 	}
-	defer CloseConnection(ws, postID)
+	defer addPostComment.CloseConnection(ws, postID)
 
 	// 注册客户端到对应帖子的连接列表
-	registerClient(ws, postID)
+	addPostComment.registerClient(ws, postID)
 
 	// 发送该帖子的历史评论给客户端
-	if err := SendHistoricalComments(ws, postID); err != nil {
+	if err := addPostComment.SendHistoricalComments(ws, postID); err != nil {
 		logger.Error("发送历史评论失败，帖子 ID: %d，错误信息: %v", postID, err)
 		return
 	}
 
 	// 监听客户端消息
-	HandleClientMessages(ws, postID, userID)
+	addPostComment.HandleClientMessages(ws, postID, userID)
 
 }

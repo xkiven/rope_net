@@ -1,4 +1,4 @@
-package comment_handlers
+package deletePostComment
 
 import (
 	"Rope_Net/models"

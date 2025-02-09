@@ -2,6 +2,7 @@ package routes
 
 import (
 	"Rope_Net/api/handlers/comment_handlers"
+	"Rope_Net/api/handlers/comment_handlers/deletePostComment"
 	"Rope_Net/api/handlers/post_handlers"
 	"Rope_Net/api/handlers/user_handlers"
 	"Rope_Net/api/handlers/user_handlers/login"
@@ -31,7 +32,7 @@ func InitRoutes(r *gin.Engine) {
 		comment := r.Group("/comment")
 		{
 			comment.GET("/ws", middleware.IdentifyTokenMiddleware, comment_handlers.WebSocketHandler)
-			comment.DELETE("/deleteComment/:commentID", middleware.IdentifyTokenMiddleware, comment_handlers.DeleteComment)
+			comment.DELETE("/deleteComment/:commentID", middleware.IdentifyTokenMiddleware, deletePostComment.DeleteComment)
 		}
 	}
 

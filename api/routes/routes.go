@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"Rope_Net/api/handlers/comment_handlers"
 	"Rope_Net/api/handlers/post_handlers"
 	"Rope_Net/api/handlers/user_handlers"
 	"Rope_Net/api/handlers/user_handlers/login"
@@ -23,9 +24,13 @@ func InitRoutes(r *gin.Engine) {
 		//post.Use(middleware.IdentifyTokenMiddleware)
 		{
 			post.POST("/publish", middleware.IdentifyTokenMiddleware, post_handlers.PublishPost)
-			post.GET("/getPost", post_handlers.GetPost)
-			post.DELETE("/deletePost", middleware.IdentifyTokenMiddleware, post_handlers.DeletePost)
+			post.GET("/getPost/:postID", post_handlers.GetPost)
+			post.DELETE("/deletePost/:postID", middleware.IdentifyTokenMiddleware, post_handlers.DeletePost)
 			post.GET("/getPostList", post_handlers.GetPostList)
+		}
+		comment := r.Group("/comment")
+		{
+			comment.POST("/create", middleware.IdentifyTokenMiddleware, comment_handlers.CreateComment)
 		}
 	}
 

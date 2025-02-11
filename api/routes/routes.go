@@ -40,9 +40,12 @@ func InitRoutes(r *gin.Engine) {
 			comment.DELETE("/deleteThreadComment/:threadCommentID", middleware.IdentifyTokenMiddleware, threadComment.DeleteThreadComment)
 		}
 		task := r.Group("/task")
+		task.Use(middleware.IdentifyTokenMiddleware)
 		{
-			task.POST("/createTask", middleware.IdentifyTokenMiddleware, task_handlers.CreateTask)
-			task.GET("/getTask", middleware.IdentifyTokenMiddleware, task_handlers.GetTask)
+			task.POST("/createTask", task_handlers.CreateTask)
+			task.GET("/getTask", task_handlers.GetTask)
+			task.POST("/completeTask/:taskID", task_handlers.CompleteTask)
+			//task.DELETE("/deleteTask", middleware.IdentifyTokenMiddleware, task_handlers.DeleteTask)
 		}
 	}
 

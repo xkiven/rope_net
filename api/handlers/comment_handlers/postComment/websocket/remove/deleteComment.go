@@ -1,4 +1,4 @@
-package websocket
+package remove
 
 import (
 	"Rope_Net/models"

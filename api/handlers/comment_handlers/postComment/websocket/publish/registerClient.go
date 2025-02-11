@@ -1,4 +1,4 @@
-package websocket
+package publish
 
 import (
 	"github.com/gorilla/websocket"

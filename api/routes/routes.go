@@ -42,6 +42,7 @@ func InitRoutes(r *gin.Engine) {
 		task := r.Group("/task")
 		{
 			task.POST("/createTask", middleware.IdentifyTokenMiddleware, task_handlers.CreateTask)
+			task.GET("/getTask", middleware.IdentifyTokenMiddleware, task_handlers.GetTask)
 		}
 	}
 

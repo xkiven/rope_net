@@ -1,4 +1,4 @@
-package db
+package websocket
 
 import (
 	"Rope_Net/models"

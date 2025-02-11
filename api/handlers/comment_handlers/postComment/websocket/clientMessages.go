@@ -1,7 +1,6 @@
 package websocket
 
 import (
-	"Rope_Net/api/handlers/comment_handlers/db"
 	"Rope_Net/models"
 	"Rope_Net/pkg/logger"
 	"github.com/gorilla/websocket"
@@ -20,7 +19,7 @@ func HandleClientMessages(ws *websocket.Conn, postID uint, userID uint) {
 		comment.UserID = userID
 		comment.CreateTime = time.Now()
 		// 处理评论，比如保存到数据库
-		if err := db.SaveCommentToDB(comment); err != nil {
+		if err := SaveCommentToDB(comment); err != nil {
 			logger.Error("保存评论到数据库失败，帖子 ID: %d，评论内容: %v，错误信息: %v", postID, comment, err)
 			continue
 		}

@@ -45,7 +45,7 @@ func InitRoutes(r *gin.Engine) {
 			task.POST("/createTask", task_handlers.CreateTask)
 			task.GET("/getTask", task_handlers.GetTask)
 			task.POST("/completeTask/:taskID", task_handlers.CompleteTask)
-			//task.DELETE("/deleteTask", middleware.IdentifyTokenMiddleware, task_handlers.DeleteTask)
+			task.DELETE("/deleteTask/:taskID", task_handlers.DeleteTask)
 		}
 	}
 

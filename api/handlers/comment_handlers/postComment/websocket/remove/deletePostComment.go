@@ -10,7 +10,7 @@ import (
 )
 
 func DeleteComment(c *gin.Context) {
-	commentIDStr := c.Param("commentID")
+	commentIDStr := c.Param("postCommentID")
 	var commentID uint
 	_, err := fmt.Sscanf(commentIDStr, "%d", &commentID)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"Rope_Net/api/handlers/comment_handlers/postComment/websocket/remove"
 	"Rope_Net/api/handlers/comment_handlers/threadComment"
 	"Rope_Net/api/handlers/post_handlers"
+	"Rope_Net/api/handlers/task_handlers"
 	"Rope_Net/api/handlers/user_handlers"
 	"Rope_Net/api/handlers/user_handlers/login"
 	"Rope_Net/middleware"
@@ -37,6 +38,10 @@ func InitRoutes(r *gin.Engine) {
 			comment.POST("/createThreadComment", middleware.IdentifyTokenMiddleware, threadComment.CreateThreadComment)
 			comment.GET("/getThreadComment/:commentID", threadComment.GetThreadComment)
 			comment.DELETE("/deleteThreadComment/:threadCommentID", middleware.IdentifyTokenMiddleware, threadComment.DeleteThreadComment)
+		}
+		task := r.Group("/task")
+		{
+			task.POST("/createTask", middleware.IdentifyTokenMiddleware, task_handlers.CreateTask)
 		}
 	}
 

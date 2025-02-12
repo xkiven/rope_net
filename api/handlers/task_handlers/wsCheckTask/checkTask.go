@@ -32,8 +32,6 @@ func CheckTask() {
 			continue
 		}
 
-		logger.Info(tasks)
-
 		for _, task := range tasks {
 			reminder := fmt.Sprintf("任务提醒: 任务 '%s' (ID: %d) 已到截止时间，但尚未完成。", task.Name, task.ID)
 			logger.Info(reminder)

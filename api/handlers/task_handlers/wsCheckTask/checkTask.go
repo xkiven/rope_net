@@ -9,8 +9,8 @@ import (
 )
 
 func CheckTask() {
-	now := time.Now()
-	fmt.Printf("当前时间: %s，时区: %s\n", now.Format(time.RFC3339), now.Location())
+	//now := time.Now()
+	//fmt.Printf("当前时间: %s，时区: %s\n", now.Format(time.RFC3339), now.Location())
 	//连接数据库
 	db, err := db2.ConnectDB()
 	if err != nil {

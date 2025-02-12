@@ -48,7 +48,7 @@ func CreateTask(c *gin.Context) {
 	task.UserID = currentUser.Id
 	task.Deadline = deadline
 	task.Name = newTask.Name
-	if task.Name < time.Now().Format(time.RFC3339) {
+	if newTask.Deadline < time.Now().Format(time.RFC3339) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status": 10016,
 			"info":   "任务截至日期应设为现在时间之后",

@@ -6,6 +6,7 @@ import (
 	"Rope_Net/api/handlers/comment_handlers/threadComment"
 	"Rope_Net/api/handlers/post_handlers"
 	"Rope_Net/api/handlers/task_handlers"
+	"Rope_Net/api/handlers/task_handlers/wsCheckTask"
 	"Rope_Net/api/handlers/user_handlers"
 	"Rope_Net/api/handlers/user_handlers/login"
 	"Rope_Net/middleware"
@@ -46,6 +47,9 @@ func InitRoutes(r *gin.Engine) {
 			task.GET("/getTask", task_handlers.GetTask)
 			task.POST("/completeTask/:taskID", task_handlers.CompleteTask)
 			task.DELETE("/deleteTask/:taskID", task_handlers.DeleteTask)
+			// 启动后台协程检查任务截止时间
+			go wsCheckTask.CheckTask()
+			task.GET("/ws", wsCheckTask.WsHandler)
 		}
 	}
 

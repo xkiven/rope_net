@@ -25,7 +25,6 @@ func CheckTask() {
 
 	for range ticker.C {
 		var tasks []models.Task
-		db = db.Debug()
 		result := db.Where("completed = ? AND deadline < ?", false, time.Now().Format(time.RFC3339)).Find(&tasks)
 		if result.Error != nil {
 			logger.Error(result.Error)
